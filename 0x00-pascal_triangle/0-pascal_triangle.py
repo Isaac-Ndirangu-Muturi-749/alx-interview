@@ -4,16 +4,17 @@
 """
 
 
-def pascal_triangle(num_rows):
+# n is num_rows
+def pascal_triangle(n):
     """
     Generate Pascal's triangle up to n rows.
     """
     triangle = []
 
-    if num_rows <= 0:
+    if n <= 0:
         return triangle
 
-    for row_num in range(num_rows):
+    for row_num in range(n):
         # Start with a row of "1"s
         row = [1] * (row_num + 1)
 
