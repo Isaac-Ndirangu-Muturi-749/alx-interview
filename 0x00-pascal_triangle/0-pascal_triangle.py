@@ -4,7 +4,7 @@
 """
 
 
-def generate_pascals_triangle(num_rows):
+def pascal_triangle(num_rows):
     """
     Generate Pascal's triangle up to n rows.
     """
