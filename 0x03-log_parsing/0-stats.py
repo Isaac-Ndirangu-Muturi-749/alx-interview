@@ -36,7 +36,7 @@ if __name__ == '__main__':
                 size = int(parts[-1])
                 file_size += size
             except (IndexError, ValueError):
-                continue
+                pass
 
             # Extract and validate the status code
             try:
@@ -44,7 +44,7 @@ if __name__ == '__main__':
                 if status_code in status_counts:
                     status_counts[status_code] += 1
             except (IndexError, ValueError):
-                continue
+                pass
 
             # Print stats every 10 lines
             if line_count % 10 == 0:
