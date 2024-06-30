@@ -53,3 +53,5 @@ try:
 except KeyboardInterrupt:
     print_stats(file_size, status_counts)
     raise
+
+print_stats(file_size, status_counts)
