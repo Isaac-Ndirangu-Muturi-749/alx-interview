@@ -1,44 +1,57 @@
 #!/usr/bin/python3
+"""
+Module 0-stats
+"""
+
 import sys
 
-def print_stats(total_size, status_codes):
-    """ Print accumulated metrics """
-    print(f"File size: {total_size}")
-    for code in sorted(status_codes.keys()):
-        if status_codes[code] > 0:
-            print(f"{code}: {status_codes[code]}")
-
-total_size = 0
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+file_size = 0
+status_counts = {200: 0,
+                 301: 0,
+                 400: 0,
+                 401: 0,
+                 403: 0,
+                 404: 0,
+                 405: 0,
+                 500: 0}
 line_count = 0
 
 
-if __name__ == '__main__':
-    try:
-        for line in sys.stdin:
-            parts = line.split()
+def print_stats(file_size, status_counts):
+    """ Print statistics. """
+    print(f"File size: {file_size}")
 
-            if len(parts) < 7:
-                continue
+    for code in sorted(status_counts.keys()):
+        if status_counts[code] > 0:
+            print(f"{code}: {status_counts[code]}")
 
-            try:
-                file_size = int(parts[-1])
-                status_code = int(parts[-2])
-            except (IndexError, ValueError):
-                continue
 
-            total_size += file_size
+try:
+    for line in sys.stdin:
+        line_count += 1
+        parts = line.split()
 
-            if status_code in status_codes:
-                status_codes[status_code] += 1
+        # Extract and validate the file size
+        try:
+            size = int(parts[-1])
+            file_size += size
+        except (IndexError, ValueError):
+            continue
 
-            line_count += 1
+        # Extract and validate the status code
+        try:
+            status_code = int(parts[-2])
+            if status_code in status_counts:
+                status_counts[status_code] += 1
+        except (IndexError, ValueError):
+            continue
 
-            if line_count % 10 == 0:
-                print_stats(total_size, status_codes)
+        # Print stats every 10 lines
+        if line_count % 10 == 0:
+            print_stats(file_size, status_counts)
 
-    except KeyboardInterrupt:
-        pass
+except KeyboardInterrupt:
+    print_stats(file_size, status_counts)
+    raise
 
-    finally:
-        print_stats(total_size, status_codes)
+print_stats(file_size, status_counts)
