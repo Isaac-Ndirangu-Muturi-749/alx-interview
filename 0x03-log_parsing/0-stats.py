@@ -55,7 +55,7 @@ if __name__ == "__main__":
     import subprocess
 
     # Ensure both scripts are executable
-    subprocess.run(['chmod', '+x', '0-generator.py'])
-    subprocess.run(['chmod', '+x', '0-stats.py'])
+    subprocess.run(['chmod', '+x', './0-generator.py'])
+    subprocess.run(['chmod', '+x', './0-stats.py'])
 
     parse_logs()
