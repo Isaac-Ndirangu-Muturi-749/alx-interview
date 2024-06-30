@@ -1,57 +1,42 @@
 #!/usr/bin/python3
-"""
-Module 0-stats
-"""
-
 import sys
 
-file_size = 0
-status_counts = {200: 0,
-                 301: 0,
-                 400: 0,
-                 401: 0,
-                 403: 0,
-                 404: 0,
-                 405: 0,
-                 500: 0}
+def print_stats(total_size, status_codes):
+    """ Print accumulated metrics """
+    print(f"File size: {total_size}")
+    for code in sorted(status_codes.keys()):
+        if status_codes[code] > 0:
+            print(f"{code}: {status_codes[code]}")
+
+total_size = 0
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 line_count = 0
-
-
-def print_stats(file_size, status_counts):
-    """ Print statistics. """
-    print(f"File size: {file_size}")
-
-    for code in sorted(status_counts.keys()):
-        if status_counts[code] > 0:
-            print(f"{code}: {status_counts[code]}")
-
 
 try:
     for line in sys.stdin:
-        line_count += 1
         parts = line.split()
 
-        # Extract and validate the file size
-        try:
-            size = int(parts[-1])
-            file_size += size
-        except (IndexError, ValueError):
+        if len(parts) < 7:
             continue
 
-        # Extract and validate the status code
         try:
+            file_size = int(parts[-1])
             status_code = int(parts[-2])
-            if status_code in status_counts:
-                status_counts[status_code] += 1
         except (IndexError, ValueError):
             continue
 
-        # Print stats every 10 lines
+        total_size += file_size
+
+        if status_code in status_codes:
+            status_codes[status_code] += 1
+
+        line_count += 1
+
         if line_count % 10 == 0:
-            print_stats(file_size, status_counts)
+            print_stats(total_size, status_codes)
 
 except KeyboardInterrupt:
-    print_stats(file_size, status_counts)
-    raise
+    pass
 
-print_stats(file_size, status_counts)
+finally:
+    print_stats(total_size, status_codes)
