@@ -9,15 +9,14 @@ import sys
 if __name__ == '__main__':
     file_size = 0
     status_counts = {200: 0,
-                    301: 0,
-                    400: 0,
-                    401: 0,
-                    403: 0,
-                    404: 0,
-                    405: 0,
-                    500: 0}
+                     301: 0,
+                     400: 0,
+                     401: 0,
+                     403: 0,
+                     404: 0,
+                     405: 0,
+                     500: 0}
     line_count = 0
-
 
     def print_stats(file_size, status_counts):
         """ Print statistics. """
@@ -26,7 +25,6 @@ if __name__ == '__main__':
         for code in sorted(status_counts.keys()):
             if status_counts[code] > 0:
                 print(f"{code}: {status_counts[code]}")
-
 
     try:
         for line in sys.stdin:
