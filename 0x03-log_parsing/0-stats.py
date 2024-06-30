@@ -1,55 +1,39 @@
 #!/usr/bin/python3
 """
-Module 0-stats
+Log parsing
 """
 
 import sys
 
-
 if __name__ == '__main__':
-    file_size = 0
-    status_counts = {200: 0,
-                     301: 0,
-                     400: 0,
-                     401: 0,
-                     403: 0,
-                     404: 0,
-                     405: 0,
-                     500: 0}
-    line_count = 0
 
-    def print_stats(file_size, status_counts):
-        """ Print statistics. """
-        print(f"File size: {file_size}")
+    filesize, count = 0, 0
+    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    stats = {k: 0 for k in codes}
 
-        for code in sorted(status_counts.keys()):
-            if status_counts[code] > 0:
-                print(f"{code}: {status_counts[code]}")
+    def print_stats(stats: dict, file_size: int) -> None:
+        print("File size: {:d}".format(filesize))
+        for k, v in sorted(stats.items()):
+            if v:
+                print("{}: {}".format(k, v))
 
     try:
         for line in sys.stdin:
-            line_count += 1
-            parts = line.split()
-
-            # Extract and validate the file size
+            count += 1
+            data = line.split()
             try:
-                size = int(parts[-1])
-                file_size += size
-            except (IndexError, ValueError):
-                continue
-
-            # Extract and validate the status code
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
             try:
-                status_code = int(parts[-2])
-                if status_code in status_counts:
-                    status_counts[status_code] += 1
-            except (IndexError, ValueError):
-                continue
-
-            # Print stats every 10 lines
-            if line_count % 10 == 0:
-                print_stats(file_size, status_counts)
-
+                filesize += int(data[-1])
+            except BaseException:
+                pass
+            if count % 10 == 0:
+                print_stats(stats, filesize)
+        print_stats(stats, filesize)
     except KeyboardInterrupt:
-        print_stats(file_size, status_counts)
+        print_stats(stats, filesize)
         raise
