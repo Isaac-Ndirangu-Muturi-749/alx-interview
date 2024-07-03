@@ -1,11 +1,20 @@
-#!/usr/bin/env python3
-"""module 0-nqueens"""
+#!/usr/bin/python3
+"""Solve the N Queens puzzle using backtracking."""
 
 import sys
 
 
 def is_safe(board, row, col):
-    """Check if it's safe to place a queen at board[row][col]."""
+    """Check if it's safe to place a queen at board[row][col].
+
+    Args:
+        board (list): The current state of the board.
+        row (int): The row to check.
+        col (int): The column to check.
+
+    Returns:
+        bool: True if it's safe to place the queen, False otherwise.
+    """
     for i in range(row):
         if board[i] == col or \
            board[i] - i == col - row or \
@@ -15,18 +24,27 @@ def is_safe(board, row, col):
 
 
 def solve_nqueens(n):
-    """Solve the N Queens problem and print all solutions."""
+    """Solve the N Queens problem and return all solutions.
+
+    Args:
+        n (int): The size of the board (n x n).
+
+    Returns:
+        list: A list of solutions, each solution is a list of positions.
+    """
     def place_queens(row):
+        """Recursively place queens on the board.
+
+        Args:
+            row (int): The current row to place a queen.
+        """
         if row == n:
-            solution = []
-            for i in range(n):
-                solution.append([i, board[i]])
-            solutions.append(solution)
-        else:
-            for col in range(n):
-                if is_safe(board, row, col):
-                    board[row] = col
-                    place_queens(row + 1)
+            solutions.append([[i, board[i]] for i in range(n)])
+            return
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row] = col
+                place_queens(row + 1)
 
     board = [-1] * n
     solutions = []
