@@ -15,18 +15,16 @@ def is_safe(board, row, col):
 
 
 def solve_nqueens(n):
-    """Solve the N Queens problem and print all solutions."""
+    """Solve the N Queens problem and return all solutions."""
     def place_queens(row):
+        """Recursively place queens on the board."""
         if row == n:
-            solution = []
-            for i in range(n):
-                solution.append([i, board[i]])
-            solutions.append(solution)
-        else:
-            for col in range(n):
-                if is_safe(board, row, col):
-                    board[row] = col
-                    place_queens(row + 1)
+            solutions.append([[i, board[i]] for i in range(n)])
+            return
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row] = col
+                place_queens(row + 1)
 
     board = [-1] * n
     solutions = []
