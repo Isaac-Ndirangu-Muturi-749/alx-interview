@@ -5,57 +5,31 @@ Module 0-stats
 
 import sys
 
+size = 0
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+count = 0
 
-def print_stats(total_size, status_codes):
-    """ Print accumulated metrics """
-    print(f"File size: {total_size}")
-    for code in sorted(status_codes.keys()):
-        if status_codes[code] > 0:
-            print(f"{code}: {status_codes[code]}")
+try:
+    for lines in sys.stdin:
+        try:
+            sp = lines.split(" ")
+            if len(sp) > 2:
+                size += int(sp[-1])
+                status_code = int(sp[-2]) if sp[-2].isdigit() else 0
+                if status_code in status_codes:
+                    status_codes[status_code] += 1
+            count += 1
+        except Exception:
+            pass
+        if count % 10 == 0:
+            print("File size: {}".format(size))
+            for key, value in sorted(status_codes.items()):
+                if value != 0:
+                    print("{}: {}".format(key, value))
+            count = 0
 
-
-def parse_logs():
-    total_size = 0
-    status_codes = {
-        200: 0,
-        301: 0,
-        400: 0,
-        401: 0,
-        403: 0,
-        404: 0,
-        405: 0,
-        500: 0}
-    line_count = 0
-
-    try:
-        for line in sys.stdin:
-            parts = line.split()
-            if len(parts) < 7:
-                continue
-            try:
-                file_size = int(parts[-1])
-                status_code = int(parts[-2])
-            except (IndexError, ValueError):
-                continue
-
-            total_size += file_size
-            if status_code in status_codes:
-                status_codes[status_code] += 1
-
-            line_count += 1
-            if line_count % 10 == 0:
-                print_stats(total_size, status_codes)
-
-    except KeyboardInterrupt:
-        print_stats(total_size, status_codes)
-        raise
-
-
-if __name__ == "__main__":
-    import subprocess
-
-    # Ensure both scripts are executable
-    subprocess.run(['chmod', '+x', './0-generator.py'])
-    subprocess.run(['chmod', '+x', './0-stats.py'])
-
-    parse_logs()
+finally:
+    print("File size: {}".format(size))
+    for key, value in sorted(status_codes.items()):
+            if value != 0:
+                print("{}: {:d}".format(key, value))
