@@ -1,77 +1,77 @@
 #!/usr/bin/python3
-"""Solve the N Queens puzzle using backtracking."""
+"""N-Queens Solver"""
 
 import sys
 
-
-def is_safe(board, row, col):
-    """Check if it's safe to place a queen at board[row][col].
-
-    Args:
-        board (list): The current state of the board.
-        row (int): The row to check.
-        col (int): The column to check.
-
-    Returns:
-        bool: True if it's safe to place the queen, False otherwise.
+def is_safe(board, row, col, size):
     """
-    for i in range(row):
-        if board[i] == col or \
-           board[i] - i == col - row or \
-           board[i] + i == col + row:
+    Check if placing a queen at board[row][col] is safe.
+    """
+    # Check if there is a queen in the same column
+    for r in range(row):
+        if board[r][col] == 1:
             return False
+
+    # Check upper-left diagonal
+    r, c = row, col
+    while r >= 0 and c >= 0:
+        if board[r][c] == 1:
+            return False
+        r -= 1
+        c -= 1
+
+    # Check upper-right diagonal
+    r, c = row, col
+    while r >= 0 and c < size:
+        if board[r][c] == 1:
+            return False
+        r -= 1
+        c += 1
+
+    # If no conflicts, it's safe to place a queen at board[row][col]
     return True
 
 
-def solve_nqueens(n):
-    """Solve the N Queens problem and return all solutions.
-
-    Args:
-        n (int): The size of the board (n x n).
-
-    Returns:
-        list: A list of solutions, each solution is a list of positions.
+def solve(board, row, size):
     """
-    def place_queens(row):
-        """Recursively place queens on the board.
+    Recursively find all solutions to the N-Queens problem.
+    """
+    if row == size:
+        # Base case: If all rows are covered, print the solution
+        print([[r, c] for r in range(size) for c in range(size) if board[r][c] == 1])
+        return True
 
-        Args:
-            row (int): The current row to place a queen.
-        """
-        if row == n:
-            solutions.append([[i, board[i]] for i in range(n)])
-            return
-        for col in range(n):
-            if is_safe(board, row, col):
-                board[row] = col
-                place_queens(row + 1)
+    for col in range(size):
+        if is_safe(board, row, col, size):
+            # If it's safe to place a queen, mark board[row][col] as 1
+            board[row][col] = 1
 
-    board = [-1] * n
-    solutions = []
-    place_queens(0)
-    return solutions
+            # Recursively call solve for the next row
+            solve(board, row + 1, size)
+
+            # Backtrack: Reset board[row][col] to 0 for other solutions
+            board[row][col] = 0
+
+    return False
 
 
-def main():
-    """Main function to handle input and output."""
+if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
 
     try:
-        n = int(sys.argv[1])
+        size = int(sys.argv[1])
     except ValueError:
         print("N must be a number")
         sys.exit(1)
 
-    if n < 4:
+    if size < 4:
         print("N must be at least 4")
         sys.exit(1)
 
-    solutions = solve_nqueens(n)
-    for solution in solutions:
-        print(solution)
+    # Initialize an n x n board with zeros
+    board = [[0 for col in range(size)] for row in range(size)]
 
-
-if __name__ == "__main__":
-    main()
+    # Call solve function to find and print all solutions
+    solve(board, 0, size)
