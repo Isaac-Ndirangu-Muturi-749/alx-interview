@@ -3,6 +3,7 @@
 
 import sys
 
+
 def is_safe(board, row, col, size):
     """
     Check if placing a queen at board[row][col] is safe.
@@ -38,7 +39,8 @@ def solve(board, row, size):
     """
     if row == size:
         # Base case: If all rows are covered, print the solution
-        print([[r, c] for r in range(size) for c in range(size) if board[r][c] == 1])
+        print([[r, c] for r in range(size)
+               for c in range(size) if board[r][c] == 1])
         return True
 
     for col in range(size):
