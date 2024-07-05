@@ -1,1 +1,1 @@
-n queens problem
+0x05. N Queens
