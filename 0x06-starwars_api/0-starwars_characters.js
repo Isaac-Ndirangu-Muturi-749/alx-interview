@@ -8,7 +8,7 @@ const movieId = process.argv[2];
 const url = `https://swapi.dev/api/films/${movieId}/`;
 
 // Function to fetch movie details and character names
-function fetchMovieCharacters() {
+function fetchMovieCharacters () {
   // Fetch the movie details
   request(url, (error, response, body) => {
     if (error) {
@@ -35,8 +35,12 @@ function fetchMovieCharacters() {
 
     // Fetch each character's details sequentially
     (async () => {
-      for (const characterUrl of characters) {
-        await fetchCharacter(characterUrl);
+      try {
+        for (const characterUrl of characters) {
+          await fetchCharacter(characterUrl);
+        }
+      } catch (error) {
+        console.error('Error fetching character details:', error);
       }
     })();
   });
