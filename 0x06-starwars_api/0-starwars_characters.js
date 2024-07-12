@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 const request = require('request');
 
 // Get the movie ID from the command line arguments
