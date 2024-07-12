@@ -15,6 +15,7 @@ function fetchMovieCharacters () {
       console.error('Error fetching movie:', error);
       return;
     }
+
     const characters = JSON.parse(body).characters;
 
     // Function to fetch and print character details
