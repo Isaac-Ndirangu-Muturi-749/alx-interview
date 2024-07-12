@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 const request = require('request');
 
 // Get the movie ID from the command line arguments
@@ -15,7 +15,6 @@ function fetchMovieCharacters () {
       console.error('Error fetching movie:', error);
       return;
     }
-
     const characters = JSON.parse(body).characters;
 
     // Function to fetch and print character details
