@@ -9,15 +9,16 @@ def rotate_2d_matrix(matrix):
     """
     n = len(matrix)  # Get the size of the matrix (n x n)
 
-    # Loop through each layer (or ring) of the matrix from outermost to innermost
+    # Loop through each layer (or ring) of the matrix from outermost to
+    # innermost
     for layer in range(n // 2):
         first = layer  # Index of the first element in the layer
         last = n - 1 - layer  # Index of the last element in the layer
 
         # Loop through the elements in the current layer
         for i in range(first, last):
-            offset = i - first  # Offset is used to move elements within the layer
-
+            # Offset is used to move elements within the layer
+            offset = i - first
             # Save the top element temporarily
             top = matrix[first][i]
 
