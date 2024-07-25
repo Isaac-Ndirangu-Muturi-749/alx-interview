@@ -3,6 +3,7 @@
 Module 0-making_change
 """
 
+
 def makeChange(coins, total):
     # If total is 0 or less, return 0
     if total <= 0:
