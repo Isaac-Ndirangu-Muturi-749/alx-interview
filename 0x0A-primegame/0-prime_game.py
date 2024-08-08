@@ -20,6 +20,7 @@ def sieve_of_eratosthenes(max_n):
 
 
 def isWinner(x, nums):
+    """isWinner"""
     if x <= 0 or not nums:
         return None
 
