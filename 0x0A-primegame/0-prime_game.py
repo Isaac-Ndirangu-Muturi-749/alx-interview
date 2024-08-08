@@ -20,7 +20,9 @@ def sieve_of_eratosthenes(max_n):
 
 
 def isWinner(x, nums):
-    """isWinner"""
+    """isWinner
+    where x is the number of rounds and nums is an array of n
+    Return: name of the player that won the most rounds"""
     if x <= 0 or not nums:
         return None
 
